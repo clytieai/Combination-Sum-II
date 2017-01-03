@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
+        vector<vector<int>> rel;
+        int dep;
+        vector<int> rec(candidates.size(),0);
+        backtracking(candidates,target,0,rec,rel);
+        return rel;
+    }
+    void backtracking(vector<int>& candi, int tar, int dep, vector<int>& rec, vector<vector<int>>& rel){
+        if(candi[dep]==tar){
+           rec[dep]=1;
+           vector<int> t;
+           for(int i=0;i<candi.size();i++){
+               if(rec[i]==1){
+                   t.push_back(candi[i]);
+               }
+           }
+           rel.push_back(t);
+           rec[dep]=0;
+        }
+        if(dep<candi.size()-1 && candi[dep]<tar){
+                if(candi[dep-1]!=candi[dep]||(candi[dep-1]==candi[dep]&&rec[dep-1]==1)){
+                    rec[dep]=1;
+                    backtracking(candi,tar-candi[dep],dep+1,rec,rel);
+                    rec[dep]=0;
+                }
+                backtracking(candi,tar,dep+1,rec,rel);
+        }
+    }
+};
